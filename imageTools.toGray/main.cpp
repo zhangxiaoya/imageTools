@@ -3,6 +3,8 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
+#include <gflags/gflags.h>
+
 void split(const std::string& str, const std::string& delim, std::vector< std::string >& result)
 {
 	size_t last = 0;
@@ -18,8 +20,18 @@ void split(const std::string& str, const std::string& delim, std::vector< std::s
 		result.push_back(str.substr(last, index - last));
 }
 
+
+DEFINE_bool(big_menu, true, "Include 'advanced' options in the menu listing");
+DEFINE_string(languages, "english,french,german",
+	"comma-separated list of languages to offer in the 'lang' menu");
+
+
 int main(int argc, char** argv)
 {
+	if (FLAGS_languages.find("english") != std::string::npos)
+	{
+	}
+
 	if (argc < 2)
 		std::cout << "Must input image file" << std::endl;
 	else
