@@ -21,23 +21,24 @@ void split(const std::string& str, const std::string& delim, std::vector< std::s
 }
 
 
-DEFINE_bool(big_menu, true, "Include 'advanced' options in the menu listing");
-DEFINE_string(languages, "english,french,german",
-	"comma-separated list of languages to offer in the 'lang' menu");
-
+DEFINE_string(srcImg, "timg.jpg", "The Color image's fullname");
 
 int main(int argc, char** argv)
 {
-	if (FLAGS_languages.find("english") != std::string::npos)
-	{
-	}
+	std::string usageStr = "";
+	usageStr += "Do convert RGB color image to gray image.\n";
+	usageStr += "Usage:\n";
+	usageStr += "    imageTools.toGray --srcImg=rgb_image_fullname.\n";
 
-	if (argc < 2)
+	google::SetUsageMessage(usageStr);
+	google::ParseCommandLineFlags(&argc, &argv, true);
+
+	if (FLAGS_srcImg.empty())
 		std::cout << "Must input image file" << std::endl;
 	else
 	{
-		std::cout<<argv[1]<<std::endl;
-		auto srcImage = cv::imread(argv[1]);
+		const auto srcImageFullname = FLAGS_srcImg;
+		auto srcImage = cv::imread(srcImageFullname);
 		if (!srcImage.empty())
 		{
 			if (srcImage.channels() == 1)
@@ -47,10 +48,9 @@ int main(int argc, char** argv)
 				cv::Mat destImg;
 				cv::cvtColor(srcImage, destImg, CV_BGR2GRAY);
 
-				std::string fullName = argv[1];
 				std::vector<std::string> splitResult;
 
-				split(fullName, ".", splitResult);
+				split(srcImageFullname, ".", splitResult);
 				auto grayImageName = splitResult[0] + "_gray.png";
 
 				cv::imwrite(grayImageName, destImg);
