@@ -5,20 +5,7 @@
 
 #include <gflags/gflags.h>
 
-void split(const std::string& str, const std::string& delim, std::vector< std::string >& result)
-{
-	size_t last = 0;
-	auto index = str.find_first_of(delim, last);
-
-	while (index != std::string::npos)
-	{
-		result.push_back(str.substr(last, index - last));
-		last = index + 1;
-		index = str.find_first_of(delim, last);
-	}
-	if (index - last>0)
-		result.push_back(str.substr(last, index - last));
-}
+#include "Util.h"
 
 
 DEFINE_string(srcImg, "timg.jpg", "The Color image's fullname");
@@ -46,14 +33,14 @@ int main(int argc, char** argv)
 			else
 			{
 				cv::Mat destImg;
-				cv::cvtColor(srcImage, destImg, CV_BGR2GRAY);
+				cvtColor(srcImage, destImg, CV_BGR2GRAY);
 
 				std::vector<std::string> splitResult;
 
-				split(srcImageFullname, ".", splitResult);
+				Util::split(srcImageFullname, ".", splitResult);
 				auto grayImageName = splitResult[0] + "_gray.png";
 
-				cv::imwrite(grayImageName, destImg);
+				imwrite(grayImageName, destImg);
 			}
 		}
 		else
