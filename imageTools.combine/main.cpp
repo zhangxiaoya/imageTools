@@ -84,5 +84,6 @@ int main(int argc, char** argv)
 			std::cout << "Save Video File Failed" << std::endl;
 		}
 	}
+	google::ShutDownCommandLineFlags();
 	return 0;
 }
