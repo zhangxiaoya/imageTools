@@ -1,8 +1,9 @@
 #include <opencv2/core/core.hpp>
-#include <gflags/gflags.h>
 #include <iostream>
 #include <highgui/highgui.hpp>
 #include <iomanip>
+
+#include <gflags/gflags.h>
 
 DEFINE_string(imageList, "", "The image list folder");
 DEFINE_string(saveFileName, "", "The video file name to save");
