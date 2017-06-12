@@ -16,14 +16,14 @@ enum FieldType
 	Eight
 };
 
-//const char* firstImageList = "E:\\WorkLogs\\Gitlab\\ExtractVideo\\ExtractVideo\\ir_file_20170531_1000m_1_8bit\\Frame_%04d.png";
-const char* firstImageList = "E:\\WorkLogs\\Gitlab\\ExtractVideo\\ExtractVideo\\ir_file_20170531_1000m_2_8bit\\Frame_%04d.png";
+const char* firstImageList = "E:\\WorkLogs\\Gitlab\\ExtractVideo\\ExtractVideo\\ir_file_20170531_1000m_1_8bit\\Frame_%04d.png";
+//const char* firstImageList = "E:\\WorkLogs\\Gitlab\\ExtractVideo\\ExtractVideo\\ir_file_20170531_1000m_2_8bit\\Frame_%04d.png";
 
 //const char* outputImageList = "E:\\WorkLogs\\Gitlab\\ExtractVideo\\ExtractVideo\\ir_file_20170531_1000m_1_8bit_maxFilter\\Frame_%04d.png";
 //const char* outputImageList = "E:\\WorkLogs\\Gitlab\\ExtractVideo\\ExtractVideo\\ir_file_20170531_1000m_2_8bit_maxFilter\\Frame_%04d.png";
 
-//const char* outputImageList = "E:\\WorkLogs\\Gitlab\\ExtractVideo\\ExtractVideo\\ir_file_20170531_1000m_1_8bit_maxFilter_discrezated\\Frame_%04d.png";
-const char* outputImageList = "E:\\WorkLogs\\Gitlab\\ExtractVideo\\ExtractVideo\\ir_file_20170531_1000m_2_8bit_maxFilter_discrezated\\Frame_%04d.png";
+const char* outputImageList = "E:\\WorkLogs\\Gitlab\\ExtractVideo\\ExtractVideo\\ir_file_20170531_1000m_1_8bit_maxFilter_discrezated\\Frame_%04d.png";
+//const char* outputImageList = "E:\\WorkLogs\\Gitlab\\ExtractVideo\\ExtractVideo\\ir_file_20170531_1000m_2_8bit_maxFilter_discrezated\\Frame_%04d.png";
 
 uchar MaxOfVector(const std::vector<uchar>::iterator& begin, const std::vector<uchar>::iterator& end)
 {
@@ -45,7 +45,7 @@ unsigned char GetMaxPixelValue(const cv::Mat& curFrame, int r, int c, int kernel
 	auto rightBottomX = leftTopX + 2 * radius;
 	auto rightBottomY = leftTopY + 2 * radius;
 
-	std::vector<uchar> pixelValues;
+	uchar maxVal = 0;
 
 	for (auto row = leftTopY; row <= rightBottomY; ++row)
 	{
@@ -53,13 +53,13 @@ unsigned char GetMaxPixelValue(const cv::Mat& curFrame, int r, int c, int kernel
 		{
 			for (auto col = leftTopX; col <= rightBottomX; ++col)
 			{
-				if (col >= 0 && col < curFrame.cols)
-					pixelValues.push_back(curFrame.at<uchar>(row, col));
+				if (col >= 0 && col < curFrame.cols && maxVal < curFrame.at<uchar>(row, col))
+					maxVal = curFrame.at<uchar>(row, col);
 			}
 		}
 	}
 
-	return MaxOfVector(pixelValues.begin(), pixelValues.end());
+	return maxVal;
 }
 
 void MaxFilter(const cv::Mat& curFrame, cv::Mat& filtedFrame, int kernelSize)
@@ -76,10 +76,10 @@ void MaxFilter(const cv::Mat& curFrame, cv::Mat& filtedFrame, int kernelSize)
 	}
 }
 
-void RemoveUnusedPixel(cv::Mat curFrame)
+void RemoveInvalidPixel(cv::Mat curFrame)
 {
 	for (auto r = 0; r < 2; ++r)
-		for (auto c = 0; c<11; ++c)
+		for (auto c = 0; c < 11; ++c)
 			curFrame.at<uchar>(r, c) = 0;
 }
 
@@ -109,7 +109,7 @@ int main(int argc, char* argv[])
 			video_capture >> curFrame;
 			if (!curFrame.empty())
 			{
-				RemoveUnusedPixel(curFrame);
+				RemoveInvalidPixel(curFrame);
 
 				imshow("Current Frame", curFrame);
 				cv::waitKey(DELAY);
