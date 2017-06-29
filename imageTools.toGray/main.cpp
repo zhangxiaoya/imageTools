@@ -19,7 +19,9 @@ int main(int argc, char** argv)
 	google::ParseCommandLineFlags(&argc, &argv, true);
 
 	if (FLAGS_srcImg.empty())
+	{
 		std::cout << "Must input image file" << std::endl;
+	}
 	else
 	{
 		const auto srcImageFullname = FLAGS_srcImg;
@@ -27,7 +29,9 @@ int main(int argc, char** argv)
 		if (!srcImage.empty())
 		{
 			if (srcImage.channels() == 1)
+			{
 				std::cout << "Input Image is not an color image!" << std::endl;
+			}
 			else
 			{
 				cv::Mat destImg;

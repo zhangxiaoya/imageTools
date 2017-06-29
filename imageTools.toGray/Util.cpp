@@ -14,5 +14,7 @@ void Util::split(const std::string& str, const std::string& delim, std::vector< 
 		index = str.find_first_of(delim, last);
 	}
 	if (index - last>0)
+	{
 		result.push_back(str.substr(last, index - last));
+	}
 }
