@@ -41,6 +41,17 @@ void PrepareVideoWriter(google::int32 ftps, cv::Size frameSize, std::string save
 		videoWriter.open(saveVideoName, -1, ftps, frameSize);
 }
 
+void SetSeprateLine(const cv::Size& newFrameSize, cv::Mat& frame)
+{
+	auto ptr = frame.ptr<cv::Vec3b>(newFrameSize.height / 2);
+	for (auto c = 0; c < newFrameSize.width; ++c)
+	{
+		ptr[c][0] = 255;
+		ptr[c][1] = 255;
+		ptr[c][2] = 255;
+	}
+}
+
 int main(int argc, char** argv)
 {
 	std::string usageStr = "";
@@ -117,15 +128,10 @@ int main(int argc, char** argv)
 
 		if (video_writer.isOpened())
 		{
-			auto index = 1;
+			auto index = 0;
 			cv::Mat frame(newFrameSize,CV_8UC3);
-			auto ptr = frame.ptr<cv::Vec3b>(img1.rows);
-			for (auto c = 0; c < img1.cols; ++c)
-			{
-				ptr[c][0] = 255;
-				ptr[c][1] = 255;
-				ptr[c][2] = 255;
-			}
+			SetSeprateLine(newFrameSize, frame);
+
 			cv::Mat colorImg1, colorImg2;
 			while (true)
 			{
@@ -134,8 +140,6 @@ int main(int argc, char** argv)
 
 				sprintf_s(fileName2, buffer_count, imageListFormat2.c_str(), index);
 				img2 = cv::imread(fileName2);
-
-				++index;
 
 				if (img1.empty() || img2.empty())
 					break;
@@ -158,7 +162,7 @@ int main(int argc, char** argv)
 
 				video_writer << frame;
 
-				std::cout << "index : " << std::setw(4) << index << std::endl;
+				std::cout << "index : " << std::setw(4) << ++index << std::endl;
 			}
 			video_writer.release();
 			std::cout << "Done!" << std::endl;
