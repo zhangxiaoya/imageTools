@@ -156,7 +156,7 @@ int main(int argc, char** argv)
 					break;
 				}
 
-				if ((img1.empty() && !img2.empty()) || (!img1.empty() && img2.empty()))
+				if ((img1.empty() && img2.empty() != true) || (img1.empty() != true && img2.empty()))
 				{
 					std::cout << "Length of two image list is not equal!" << std::endl;
 					break;
