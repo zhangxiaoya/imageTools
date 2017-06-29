@@ -49,8 +49,7 @@ int main(int argc, char** argv)
 		auto ftps = FLAGS_ftps;
 
 		char fileName1[buffer_count];
-//		auto imageListFormat1 = FLAGS_imageList1 + "\\" + FLAGS_nameTemplate1 + FLAGS_format1;
-		auto imageListFormat1 = FLAGS_imageList1 + "\\" + FLAGS_nameTemplate1 + ".bmp";
+		auto imageListFormat1 = FLAGS_imageList1 + "\\" + FLAGS_nameTemplate1 + FLAGS_format1;
 		sprintf_s(fileName1, buffer_count, imageListFormat1.c_str(), 0);
 
 		char fileName2[buffer_count];
@@ -81,7 +80,7 @@ int main(int argc, char** argv)
 			return -1;
 		}
 		auto convertImg1ToColor = false;
-		if(img1.channels() == 1)
+		if (img1.channels() == 1)
 			convertImg1ToColor = true;
 
 		auto convertImg2ToColor = false;
