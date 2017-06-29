@@ -33,12 +33,18 @@ void ConstructSaveFileName(const google::int32 ftps, std::string& saveVideoName)
 void PrepareVideoWriter(google::int32 ftps, cv::Size frameSize, std::string saveVideoName, cv::VideoWriter& videoWriter)
 {
 	if (FLAGS_compressFourCC.empty())
+	{
 		std::cout << "No Compress with MJPG" << std::endl;
+	}
 
 	if (FLAGS_compressFourCC == "yes")
+	{
 		videoWriter.open(saveVideoName, CV_FOURCC('M', 'J', 'P', 'G'), ftps, frameSize);
+	}
 	else
+	{
 		videoWriter.open(saveVideoName, -1, ftps, frameSize);
+	}
 }
 
 void SetSeprateLine(const cv::Size& newFrameSize, cv::Mat& frame)
@@ -103,11 +109,15 @@ int main(int argc, char** argv)
 		}
 		auto convertImg1ToColor = false;
 		if (img1.channels() == 1)
+		{
 			convertImg1ToColor = true;
+		}
 
 		auto convertImg2ToColor = false;
 		if (img2.channels() == 1)
+		{
 			convertImg2ToColor = true;
+		}
 
 		auto newFrameSize = cv::Size(img1.cols, img1.rows * 2 + 1);
 
@@ -142,9 +152,11 @@ int main(int argc, char** argv)
 				img2 = cv::imread(fileName2);
 
 				if (img1.empty() && img2.empty())
+				{
 					break;
+				}
 
-				if ((img1.empty() && !img2.empty()) || (!img1.empty() && img2.empty()))
+				if ((img1.empty() && img2.empty() != true) || (img1.empty() != true && img2.empty()))
 				{
 					std::cout << "Length of two image list is not equal!" << std::endl;
 					break;
@@ -154,14 +166,22 @@ int main(int argc, char** argv)
 				auto downRect = cv::Rect(0, img1.rows + 1, img2.cols, img2.rows);
 
 				if (convertImg1ToColor)
+				{
 					cvtColor(img1, colorImg1, CV_GRAY2RGB);
+				}
 				else
+				{
 					colorImg1 = img1;
+				}
 
 				if (convertImg2ToColor)
+				{
 					cvtColor(img2, colorImg2, CV_GRAY2RGB);
+				}
 				else
+				{
 					colorImg2 = img2;
+				}
 
 				colorImg1.copyTo(frame(upRect));
 				colorImg2.copyTo(frame(downRect));
