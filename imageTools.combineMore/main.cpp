@@ -141,8 +141,14 @@ int main(int argc, char** argv)
 				sprintf_s(fileName2, buffer_count, imageListFormat2.c_str(), index);
 				img2 = cv::imread(fileName2);
 
-				if (img1.empty() || img2.empty())
+				if (img1.empty() && img2.empty())
 					break;
+
+				if ((img1.empty() && !img2.empty()) || (!img1.empty() && img2.empty()))
+				{
+					std::cout << "Length of two image list is not equal!" << std::endl;
+					break;
+				}
 
 				auto upRect = cv::Rect(0, 0, img1.cols, img1.rows);
 				auto downRect = cv::Rect(0, img1.rows + 1, img2.cols, img2.rows);
