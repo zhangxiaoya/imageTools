@@ -30,6 +30,17 @@ void ConstructSaveFileName(const google::int32 ftps, std::string& saveVideoName)
 	saveVideoName += ".avi";
 }
 
+void PrepareVideoWriter(google::int32 ftps, cv::Size frameSize, std::string saveVideoName, cv::VideoWriter& videoWriter)
+{
+	if (FLAGS_compressFourCC.empty())
+		std::cout << "No Compress with MJPG" << std::endl;
+
+	if (FLAGS_compressFourCC == "yes")
+		videoWriter.open(saveVideoName, CV_FOURCC('M', 'J', 'P', 'G'), ftps, frameSize);
+	else
+		videoWriter.open(saveVideoName, -1, ftps, frameSize);
+}
+
 int main(int argc, char** argv)
 {
 	std::string usageStr = "";
@@ -101,16 +112,8 @@ int main(int argc, char** argv)
 
 		std::cout << "The saved file name is " << saveVideoName << std::endl;
 
-		if (FLAGS_compressFourCC.empty())
-		{
-			std::cout << "No Compress with MJPG" << std::endl;
-		}
-
 		cv::VideoWriter video_writer;
-		if (FLAGS_compressFourCC == "yes")
-			video_writer.open(saveVideoName, CV_FOURCC('M', 'J', 'P', 'G'), ftps, newFrameSize);
-		else
-			video_writer.open(saveVideoName, -1, ftps, newFrameSize);
+		PrepareVideoWriter(ftps, newFrameSize, saveVideoName, video_writer);
 
 		if (video_writer.isOpened())
 		{
