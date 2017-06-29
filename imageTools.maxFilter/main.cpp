@@ -104,10 +104,10 @@ int main(int argc, char* argv[])
 	{
 		std::cout << "Open Image List Success!" << std::endl;
 
-		while (!curFrame.empty() || frameIndex == 0)
+		while (curFrame.empty() != true || frameIndex == 0)
 		{
 			video_capture >> curFrame;
-			if (!curFrame.empty())
+			if (curFrame.empty() != true)
 			{
 				RemoveInvalidPixel(curFrame);
 
