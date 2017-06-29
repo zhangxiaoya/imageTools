@@ -31,7 +31,9 @@ uchar MaxOfVector(const std::vector<uchar>::iterator& begin, const std::vector<u
 	for (auto it = begin; it != end; ++it)
 	{
 		if (maxResult < *it)
+		{
 			maxResult = *it;
+		}
 	}
 	return maxResult;
 }
@@ -54,7 +56,9 @@ unsigned char GetMaxPixelValue(const cv::Mat& curFrame, int r, int c, int kernel
 			for (auto col = leftTopX; col <= rightBottomX; ++col)
 			{
 				if (col >= 0 && col < curFrame.cols && maxVal < curFrame.at<uchar>(row, col))
+				{
 					maxVal = curFrame.at<uchar>(row, col);
+				}
 			}
 		}
 	}
@@ -79,15 +83,23 @@ void MaxFilter(const cv::Mat& curFrame, cv::Mat& filtedFrame, int kernelSize)
 void RemoveInvalidPixel(cv::Mat curFrame)
 {
 	for (auto r = 0; r < 2; ++r)
+	{
 		for (auto c = 0; c < 11; ++c)
+		{
 			curFrame.at<uchar>(r, c) = 0;
+		}
+	}
 }
 
 void Discretization(const cv::Mat& filtedFrame, cv::Mat& discretizatedFrame, uint8_t bin)
 {
 	for (auto r = 0; r < filtedFrame.rows; ++r)
+	{
 		for (auto c = 0; c < filtedFrame.cols; ++c)
+		{
 			discretizatedFrame.at<uint8_t>(r, c) = (filtedFrame.at<uint8_t>(r, c) / bin) * bin;
+		}
+	}
 }
 
 int main(int argc, char* argv[])
