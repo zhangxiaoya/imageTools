@@ -4,6 +4,8 @@
 #include <highgui/highgui.hpp>
 #include <imgproc/imgproc.hpp>
 
+#include "googleFlag.h"
+
 void ImageStretchByHistogram(const cv::Mat& srcImg, cv::Mat& dstImg)
 {
 	assert(srcImg.cols == dstImg.cols);
@@ -12,7 +14,7 @@ void ImageStretchByHistogram(const cv::Mat& srcImg, cv::Mat& dstImg)
 	double probabilityHist[256], cumulateDistributeHist[256], pixcelValuCounts[256];
 
 	memset(probabilityHist, 0, sizeof(probabilityHist));
-	memset(cumulateDistributeHist , 0, sizeof(cumulateDistributeHist ));
+	memset(cumulateDistributeHist, 0, sizeof(cumulateDistributeHist));
 	memset(pixcelValuCounts, 0, sizeof(pixcelValuCounts));
 
 	auto height = srcImg.rows;
@@ -37,7 +39,7 @@ void ImageStretchByHistogram(const cv::Mat& srcImg, cv::Mat& dstImg)
 	{
 		for (auto k = 0; k <= i; k++)
 		{
-			cumulateDistributeHist [i] += probabilityHist[k];
+			cumulateDistributeHist[i] += probabilityHist[k];
 		}
 	}
 
@@ -46,38 +48,57 @@ void ImageStretchByHistogram(const cv::Mat& srcImg, cv::Mat& dstImg)
 		for (auto y = 0; y < height; y++)
 		{
 			auto v = srcImg.at<uchar>(y, x);
-			dstImg.at<uchar>(y, x) = cumulateDistributeHist [v] * 255 + 0.5;
+			dstImg.at<uchar>(y, x) = cumulateDistributeHist[v] * 255 + 0.5;
 		}
 	}
 }
 
 int main(int argc, char* argv[])
 {
-	std::cout << "This is Pro Contrast Tool" << std::endl;
+	std::string usageStr = "";
+	usageStr += "Pro contrast image (gray image only now).\n";
+	usageStr += "Usage:\n";
+	usageStr += "    imageTools.proContrast --inputImage=source image file full name --outputImage=output image fulle name --format=save file format.\n";
 
-	auto img = cv::imread("E:\\WorkLogs\\Data\\RachelZhang.jpg");
+	google::SetUsageMessage(usageStr);
+	google::ParseCommandLineFlags(&argc, &argv, true);
 
-	cv::Mat grayImg;
-	if (img.channels() == 3)
+	if (FLAGS_inputImage.empty())
 	{
-		cvtColor(img, grayImg, CV_BGR2GRAY);
+		std::cout << "Source image file name cannot be empty!" << std::endl;
+		system("Pause");
+		return -1;
 	}
-	else
+
+	auto inputImageFilename = FLAGS_inputImage;
+	auto sourceImage = cv::imread(inputImageFilename);
+
+	if (!sourceImage.empty())
 	{
-		grayImg = img;
+		auto outputImageFileName = FLAGS_outputImage;
+		outputImageFileName += ".";
+		outputImageFileName += FLAGS_format;
+
+		cv::Mat grayImg;
+		if (sourceImage.channels() == 3)
+		{
+			cvtColor(sourceImage, grayImg, CV_BGR2GRAY);
+		}
+		else
+		{
+			grayImg = sourceImage;
+		}
+
+		cv::Mat resultImg(grayImg.rows, grayImg.cols, CV_8UC1);
+		ImageStretchByHistogram(grayImg, resultImg);
+
+		imwrite(outputImageFileName, resultImg);
 	}
 
-	imshow("Original Image", grayImg);
+	google::ShutDownCommandLineFlags();
 
-	cv::Mat resImg(grayImg.rows, grayImg.cols, CV_8UC1);
-
-	ImageStretchByHistogram(grayImg, resImg);
-
-	imshow("Result Image", resImg);
-
-	cv::waitKey(0);
-	
-	cv::destroyAllWindows();
+	std::cout << "Done!" << std::endl;
 	system("Pause");
+
 	return 0;
 }
