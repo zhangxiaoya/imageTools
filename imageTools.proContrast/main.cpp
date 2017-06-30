@@ -73,7 +73,13 @@ int main(int argc, char* argv[])
 	auto inputImageFilename = FLAGS_inputImage;
 	auto sourceImage = cv::imread(inputImageFilename);
 
-	if (!sourceImage.empty())
+	if (sourceImage.empty() == true)
+	{
+		std::cout << "Open image file failed!" <<std::endl;
+		system("Pause");
+		return -1;
+	}
+	else
 	{
 		auto outputImageFileName = FLAGS_outputImage;
 		outputImageFileName += ".";
