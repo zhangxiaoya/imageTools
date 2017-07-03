@@ -6,6 +6,7 @@
 #include "Models/DifferenceElem.hpp"
 #include "Configures/GlobalConfig.h"
 #include "Utils/GeneralUtils.hpp"
+#include <iomanip>
 
 std::vector<std::vector<uchar>> GetMaxMinPixelValueDifferenceMap(cv::Mat& curFrame)
 {
@@ -84,36 +85,53 @@ void StrengthenIntensityOfBlock(cv::Mat& currentGrayFrame)
 }
 
 
+void GetTheFirstImage(cv::Mat& currentFrame)
+{
+	auto startIndex = 0;
+	sprintf_s(imageFullName, BUFF_SIZE, imageListFormat, startIndex);
+	currentFrame = cv::imread(imageFullName);
+}
 
 int main(int argc, char* argv[])
 {
 	std::cout << "This is Strengthen intensity" << std::endl;
 
-	char imageFullName[BUFF_SIZE];
+	cv::Mat currentFrame;
+	cv::Mat grayImg;
 
-	sprintf_s(imageFullName, BUFF_SIZE, imageListFormat, imageIndex);
+	GetTheFirstImage(currentFrame);
 
-	auto img = cv::imread(imageFullName);
-
-	if (img.empty() == true)
+	if (currentFrame.empty() == true)
 	{
 		std::cout << "Open Image File Failed!" << std::endl;
 		system("Pause");
 		return -1;
 	}
+	UpdateImageSize(currentFrame);
 
-	UpdateImageSize(img);
+	while (true)
+	{
+		sprintf_s(imageFullName, BUFF_SIZE, imageListFormat, imageIndex);
+		currentFrame = cv::imread(imageFullName);
 
-	cv::Mat grayImg;
-	GeneralUtil::ToGray(img, grayImg);
+		if (currentFrame.empty() == true)
+		{
+			break;
+		}
 
-	imshow("Before Strengthen Intensity", grayImg);
+		GeneralUtil::ToGray(currentFrame, grayImg);
 
-	StrengthenIntensityOfBlock(grayImg);
+		imshow("Before Strengthen Intensity", grayImg);
 
-	imshow("After Strengthen Intensity", grayImg);
+		StrengthenIntensityOfBlock(grayImg);
 
-	cv::waitKey(0);
+		imshow("After Strengthen Intensity", grayImg);
+
+		std::cout << "Current Index = " << std::setw(8) << ++imageIndex << std::endl;
+
+		cv::waitKey(100);
+	}
+
 
 	cv::destroyAllWindows();
 

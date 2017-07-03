@@ -11,6 +11,7 @@ const auto BLOCK_SIZE = 10;
 
 const auto BUFF_SIZE = 100;
 const auto imageListFormat = "E:\\WorkLogs\\Data\\Ir\\207\\Raw\\1_0-600m_150ms\\Frame_%08d.bmp";
+static char imageFullName[BUFF_SIZE];
 
 inline void UpdateImageSize(cv::Mat& img)
 {
