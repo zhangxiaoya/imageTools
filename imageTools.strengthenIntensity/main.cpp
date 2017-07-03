@@ -8,6 +8,8 @@
 #include "Utils/GeneralUtils.hpp"
 #include <iomanip>
 
+#define DEBUG 1;
+
 std::vector<std::vector<uchar>> GetMaxMinPixelValueDifferenceMap(cv::Mat& curFrame)
 {
 	std::vector<std::vector<uchar>> maxmindiff(countY, std::vector<uchar>(countX, 0));
@@ -39,14 +41,34 @@ void GetMaxValueOfMatrix(std::vector<std::vector<uchar>> maxmindiff, DifferenceE
 	}
 }
 
+void GetDiffValueOfMatrixBigThanThreshold(std::vector<std::vector<uchar>> maxmindiff, std::vector<DifferenceElem>& diffElemVec)
+{
+	diffElemVec.clear();
+	for (auto br = 0; br < countY; ++br)
+	{
+		for (auto bc = 0; bc < countX; ++bc)
+		{
+			if (3 <= static_cast<int>(maxmindiff[br][bc]))
+			{
+				DifferenceElem diffElem;
+				diffElem.blockX = bc;
+				diffElem.blockY = br;
+				diffElem.diffVal = static_cast<int>(maxmindiff[br][bc]);
+				diffElemVec.push_back(diffElem);
+			}
+		}
+	}
+}
+
 std::vector<DifferenceElem> GetMostMaxDiffBlock(std::vector<std::vector<uchar>> maxmindiff)
 {
 	std::vector<DifferenceElem> mostPossibleBlocks;
 
-	DifferenceElem diffElem;
-	GetMaxValueOfMatrix(maxmindiff, diffElem);
+	//	DifferenceElem diffElem;
+	//	GetMaxValueOfMatrix(maxmindiff, diffElem);
+	//	mostPossibleBlocks.push_back(diffElem);
 
-	mostPossibleBlocks.push_back(diffElem);
+	GetDiffValueOfMatrixBigThanThreshold(maxmindiff, mostPossibleBlocks);
 
 	return mostPossibleBlocks;
 }
@@ -55,11 +77,25 @@ std::vector<DifferenceElem> GetMostMaxDiffBlock(std::vector<std::vector<uchar>> 
 void StrengthenIntensityOfBlock(cv::Mat& currentGrayFrame)
 {
 	auto maxmindiffMatrix = GetMaxMinPixelValueDifferenceMap(currentGrayFrame);
+#ifdef  DEBUG
+	for (auto r = 0; r < countY; ++r)
+	{
+		for (auto c = 0; c < countX; ++c)
+		{
+			std::cout << std::setw(3) << static_cast<int>(maxmindiffMatrix[r][c]);
+		}
+		std::cout << std::endl;
+	}
+#endif
 
 	auto differenceElems = GetMostMaxDiffBlock(maxmindiffMatrix);
 
 	for (auto elem : differenceElems)
 	{
+#ifdef  DEBUG
+		std::cout << " Block X = " << elem.blockX << " Block Y = " << elem.blockY << " Diff Value = " << elem.diffVal << std::endl;
+#endif
+
 		auto centerX = elem.blockX * BLOCK_SIZE + BLOCK_SIZE / 2;
 		auto centerY = elem.blockY * BLOCK_SIZE + BLOCK_SIZE / 2;
 		auto boundingBoxLeftTopX = centerX - BLOCK_SIZE >= 0 ? centerX - BLOCK_SIZE : 0;
@@ -131,7 +167,6 @@ int main(int argc, char* argv[])
 
 		cv::waitKey(100);
 	}
-
 
 	cv::destroyAllWindows();
 
