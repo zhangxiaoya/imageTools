@@ -45,7 +45,6 @@ std::vector<DifferenceElem> GetMostMaxDiffBlock(std::vector<std::vector<uchar>> 
 	DifferenceElem diffElem;
 	GetMaxValueOfMatrix(maxmindiff, diffElem);
 
-	std::cout << "Block X = " << diffElem.blockX << " Block Y = " << diffElem.blockY << " Difference Value = " << diffElem.diffVal << std::endl;
 	mostPossibleBlocks.push_back(diffElem);
 
 	return mostPossibleBlocks;
@@ -85,11 +84,16 @@ void StrengthenIntensityOfBlock(cv::Mat& currentGrayFrame)
 }
 
 
+
 int main(int argc, char* argv[])
 {
 	std::cout << "This is Strengthen intensity" << std::endl;
 
-	auto img = cv::imread("E:\\WorkLogs\\Data\\Ir\\207\\Raw\\1_0-600m_150ms\\Frame_00000000.bmp");
+	char imageFullName[BUFF_SIZE];
+
+	sprintf_s(imageFullName, BUFF_SIZE, imageListFormat, imageIndex);
+
+	auto img = cv::imread(imageFullName);
 
 	if (img.empty() == true)
 	{
