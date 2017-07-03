@@ -3,8 +3,8 @@
 #include <highgui/highgui.hpp>
 #include <imgproc/imgproc.hpp>
 
-#include "GlobalConfig.h"
 #include "Models/DifferenceElem.hpp"
+#include "Configures/GlobalConfig.h"
 
 uchar GetMinValueOfBlock(const cv::Mat& mat)
 {

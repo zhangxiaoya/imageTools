@@ -5,16 +5,11 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="Models">
       <UniqueIdentifier>{5dc2fa75-d7e2-41ec-afc0-b1c27f95ae95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Configures">
+      <UniqueIdentifier>{8c4d12c0-0c3e-4208-8953-dfb5597b2501}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -23,11 +18,11 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GlobalConfig.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Models\DifferenceElem.hpp">
       <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Configures\GlobalConfig.h">
+      <Filter>Configures</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
