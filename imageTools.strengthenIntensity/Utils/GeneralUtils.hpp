@@ -10,7 +10,7 @@ public:
 
 	static uchar CalculateAverageValue(const cv::Mat& frame, int leftTopX, int leftTopY, int rightBottomX, int rightBottomY);
 
-	static void toGray(const cv::Mat& img, cv::Mat& grayImg);
+	static void ToGray(const cv::Mat& img, cv::Mat& grayImg);
 };
 
 inline uchar GeneralUtil::GetMinValueOfBlock(const cv::Mat& mat)
@@ -59,7 +59,7 @@ inline uchar GeneralUtil::CalculateAverageValue(const cv::Mat& frame, int leftTo
 	return static_cast<uchar>(sumAll / (rightBottomY - leftTopY));
 }
 
-inline void GeneralUtil::toGray(const cv::Mat& img, cv::Mat& grayImg)
+inline void GeneralUtil::ToGray(const cv::Mat& img, cv::Mat& grayImg)
 {
 	if (img.channels() == 3)
 	{
