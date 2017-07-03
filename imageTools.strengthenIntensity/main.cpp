@@ -5,36 +5,7 @@
 
 #include "Models/DifferenceElem.hpp"
 #include "Configures/GlobalConfig.h"
-
-uchar GetMinValueOfBlock(const cv::Mat& mat)
-{
-	uchar minVal = 255;
-	for (auto r = 0; r < mat.rows; ++r)
-	{
-		for (auto c = 0; c < mat.cols; ++c)
-		{
-			if (minVal > mat.at<uchar>(r, c))
-			{
-				minVal = mat.at<uchar>(r, c);
-			}
-		}
-	}
-	return minVal;
-}
-
-uchar GetMaxValueOfBlock(const cv::Mat& mat)
-{
-	uchar maxVal = 0;
-	for (auto r = 0; r < mat.rows; ++r)
-	{
-		for (auto c = 0; c < mat.cols; ++c)
-		{
-			if (maxVal < mat.at<uchar>(r, c))
-				maxVal = mat.at<uchar>(r, c);
-		}
-	}
-	return maxVal;
-}
+#include "Utils/GeneralUtils.hpp"
 
 std::vector<std::vector<uchar>> GetMaxMinPixelValueDifferenceMap(cv::Mat& curFrame)
 {
@@ -45,7 +16,7 @@ std::vector<std::vector<uchar>> GetMaxMinPixelValueDifferenceMap(cv::Mat& curFra
 		for (auto bc = 0; bc < countX; ++bc)
 		{
 			auto width = bc == (countX - 1) ? IMAGE_WIDTH - (countX - 1) * BLOCK_SIZE : BLOCK_SIZE;
-			maxmindiff[br][bc] = GetMaxValueOfBlock(curFrame(cv::Rect(bc * BLOCK_SIZE, br * BLOCK_SIZE, width, height))) - GetMinValueOfBlock(curFrame(cv::Rect(bc * BLOCK_SIZE, br * BLOCK_SIZE, width, height)));
+			maxmindiff[br][bc] = GeneralUtil::GetMaxValueOfBlock(curFrame(cv::Rect(bc * BLOCK_SIZE, br * BLOCK_SIZE, width, height))) - GeneralUtil::GetMinValueOfBlock(curFrame(cv::Rect(bc * BLOCK_SIZE, br * BLOCK_SIZE, width, height)));
 		}
 	}
 	return maxmindiff;
@@ -80,21 +51,6 @@ std::vector<DifferenceElem> GetMostMaxDiffBlock(std::vector<std::vector<uchar>> 
 	return mostPossibleBlocks;
 }
 
-uchar CalculateAverageValue(const cv::Mat& frame, int leftTopX, int leftTopY, int rightBottomX, int rightBottomY)
-{
-	auto sumAll = 0;
-	for (auto r = leftTopY; r < rightBottomY; ++r)
-	{
-		auto sumRow = 0;
-		for (auto c = leftTopX; c < rightBottomX; ++c)
-		{
-			sumRow += frame.at<uchar>(r, c);
-		}
-		sumAll += sumRow / (rightBottomX - leftTopX);
-	}
-
-	return static_cast<uchar>(sumAll / (rightBottomY - leftTopY));
-}
 
 void StrengthenIntensityOfBlock(cv::Mat& currentGrayFrame)
 {
@@ -110,7 +66,7 @@ void StrengthenIntensityOfBlock(cv::Mat& currentGrayFrame)
 		auto boundingBoxLeftTopY = centerY - BLOCK_SIZE >= 0 ? centerY - BLOCK_SIZE : 0;
 		auto boundingBoxRightBottomX = centerX + BLOCK_SIZE < IMAGE_WIDTH ? centerX + BLOCK_SIZE : IMAGE_WIDTH - 1;
 		auto boundingBoxRightBottomY = centerY + BLOCK_SIZE < IMAGE_HEIGHT ? centerY + BLOCK_SIZE : IMAGE_HEIGHT - 1;
-		auto averageValue = CalculateAverageValue(currentGrayFrame, boundingBoxLeftTopX, boundingBoxLeftTopY, boundingBoxRightBottomX, boundingBoxRightBottomY);
+		auto averageValue = GeneralUtil::CalculateAverageValue(currentGrayFrame, boundingBoxLeftTopX, boundingBoxLeftTopY, boundingBoxRightBottomX, boundingBoxRightBottomY);
 
 		auto maxdiffBlockRightBottomX = (elem.blockX + 1) * BLOCK_SIZE > IMAGE_WIDTH ? IMAGE_WIDTH - 1 : (elem.blockX + 1) * BLOCK_SIZE;
 		auto maxdiffBlockRightBottomY = (elem.blockY + 1) * BLOCK_SIZE > IMAGE_HEIGHT ? IMAGE_HEIGHT - 1 : (elem.blockY + 1) * BLOCK_SIZE;
@@ -125,18 +81,6 @@ void StrengthenIntensityOfBlock(cv::Mat& currentGrayFrame)
 				}
 			}
 		}
-	}
-}
-
-void toGray(const cv::Mat& img, cv::Mat& grayImg)
-{
-	if (img.channels() == 3)
-	{
-		cvtColor(img, grayImg, CV_BGR2GRAY);
-	}
-	else
-	{
-		grayImg = img;
 	}
 }
 
@@ -157,7 +101,7 @@ int main(int argc, char* argv[])
 	UpdateImageSize(img);
 
 	cv::Mat grayImg;
-	toGray(img, grayImg);
+	GeneralUtil::toGray(img, grayImg);
 
 	imshow("Before Strengthen Intensity", grayImg);
 

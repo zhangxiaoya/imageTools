@@ -124,6 +124,7 @@
   <ItemGroup>
     <ClInclude Include="Configures\GlobalConfig.h" />
     <ClInclude Include="Models\DifferenceElem.hpp" />
+    <ClInclude Include="Utils\GeneralUtils.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

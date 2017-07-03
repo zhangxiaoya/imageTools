@@ -11,6 +11,9 @@
     <Filter Include="Configures">
       <UniqueIdentifier>{8c4d12c0-0c3e-4208-8953-dfb5597b2501}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{ad571fe3-8ccf-49d9-8f49-b06b92e0695a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -23,6 +26,9 @@
     </ClInclude>
     <ClInclude Include="Configures\GlobalConfig.h">
       <Filter>Configures</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\GeneralUtils.hpp">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
