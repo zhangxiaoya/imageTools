@@ -37,7 +37,9 @@ inline uchar GeneralUtil::GetMaxValueOfBlock(const cv::Mat& mat)
 		for (auto c = 0; c < mat.cols; ++c)
 		{
 			if (maxVal < mat.at<uchar>(r, c))
+			{
 				maxVal = mat.at<uchar>(r, c);
+			}
 		}
 	}
 	return maxVal;

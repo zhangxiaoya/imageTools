@@ -25,7 +25,7 @@ std::vector<std::vector<uchar>> GetMaxMinPixelValueDifferenceMap(cv::Mat& curFra
 	return maxmindiff;
 }
 
-void GetMaxValueOfMatrix(std::vector<std::vector<uchar>> maxmindiff, DifferenceElem& diffElem)
+void GetMaxValueOfMatrix(const std::vector<std::vector<uchar>>& maxmindiff, DifferenceElem& diffElem)
 {
 	for (auto br = 0; br < countY; ++br)
 	{
@@ -41,7 +41,7 @@ void GetMaxValueOfMatrix(std::vector<std::vector<uchar>> maxmindiff, DifferenceE
 	}
 }
 
-void GetDiffValueOfMatrixBigThanThreshold(std::vector<std::vector<uchar>> maxmindiff, std::vector<DifferenceElem>& diffElemVec)
+void GetDiffValueOfMatrixBigThanThreshold(const std::vector<std::vector<uchar>>& maxmindiff, std::vector<DifferenceElem>& diffElemVec)
 {
 	diffElemVec.clear();
 	for (auto br = 0; br < countY; ++br)
@@ -60,7 +60,7 @@ void GetDiffValueOfMatrixBigThanThreshold(std::vector<std::vector<uchar>> maxmin
 	}
 }
 
-std::vector<DifferenceElem> GetMostMaxDiffBlock(std::vector<std::vector<uchar>> maxmindiff)
+std::vector<DifferenceElem> GetMostMaxDiffBlock(const std::vector<std::vector<uchar>>& maxmindiff)
 {
 	std::vector<DifferenceElem> mostPossibleBlocks;
 
