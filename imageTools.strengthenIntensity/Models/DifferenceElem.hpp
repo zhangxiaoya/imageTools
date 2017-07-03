@@ -10,4 +10,3 @@ public:
 	int blockY;
 	int diffVal;
 };
-
