@@ -140,15 +140,6 @@ void toGray(const cv::Mat& img, cv::Mat& grayImg)
 	}
 }
 
-void UpdateImageSize(cv::Mat& img)
-{
-	std::cout << "Update Image Size" << std::endl;
-
-	IMAGE_WIDTH = img.cols;
-	IMAGE_HEIGHT = img.rows;
-	countX = ceil(static_cast<double>(IMAGE_WIDTH) / BLOCK_SIZE);
-	countY = ceil(static_cast<double>(IMAGE_HEIGHT) / BLOCK_SIZE);
-}
 
 int main(int argc, char* argv[])
 {
