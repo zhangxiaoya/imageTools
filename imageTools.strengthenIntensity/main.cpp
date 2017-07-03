@@ -4,18 +4,7 @@
 #include <imgproc/imgproc.hpp>
 
 #include "GlobalConfig.h"
-
-class DifferenceElem
-{
-public:
-	DifferenceElem() : blockX(-1), blockY(-1), diffVal(0)
-	{
-	}
-
-	int blockX;
-	int blockY;
-	int diffVal;
-};
+#include "Models/DifferenceElem.hpp"
 
 uchar GetMinValueOfBlock(const cv::Mat& mat)
 {
