@@ -101,7 +101,7 @@ int main(int argc, char* argv[])
 	UpdateImageSize(img);
 
 	cv::Mat grayImg;
-	GeneralUtil::toGray(img, grayImg);
+	GeneralUtil::ToGray(img, grayImg);
 
 	imshow("Before Strengthen Intensity", grayImg);
 
