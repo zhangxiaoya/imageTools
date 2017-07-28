@@ -134,11 +134,6 @@ int main(int argc, char* argv[])
 
 		cv::Mat smallSmallframe(ImageHeight, ImageWidth, CV_8UC1);
 
-		if (frameIndex == 999)
-		{
-			auto dummy = 1;
-		}
-
 		while (byteIndex < ImageHeight * ImageWidth * 2)
 		{
 			uint8_t highPart = fin.get();
