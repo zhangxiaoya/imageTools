@@ -5,8 +5,8 @@
 #include <iomanip>
 #include <imgproc/imgproc.hpp>
 
-const auto ImageWidth = 320;
-const auto ImageHeight = 256;
+const auto ImageWidth = 256;
+const auto ImageHeight = 320;
 const auto FileNameBufferSize = 150;
 
 void ConstitudePixel(uint8_t highPart, uint8_t lowPart, uint16_t& perPixel)
@@ -25,6 +25,17 @@ void ChangeRows(int& row, int& col)
 		row++;
 	}
 }
+
+void ChangeCols(int& row, int& col)
+{
+	row++;
+	if (row == ImageHeight)
+	{
+		row = 0;
+		col++;
+	}
+}
+
 
 bool GetFileLength(std::ifstream& fin)
 {
@@ -136,6 +147,11 @@ void GenerateLikeEqualizedFrame(const cv::Mat& basicFrame, cv::Mat& likeEqualize
 
 		for (auto c = 0; c < ImageWidth; ++c)
 		{
+			if (static_cast<uint16_t>(srcPtr[c]) < minVal)
+			{
+				dstPtr[c] = newPixels[0];
+				continue;
+			}
 			auto pixelVal = static_cast<int>((static_cast<int>(srcPtr[c]) - static_cast<int>(minVal) + 0.5) / scale);
 			dstPtr[c] = newPixels[pixelVal];
 		}
@@ -144,24 +160,15 @@ void GenerateLikeEqualizedFrame(const cv::Mat& basicFrame, cv::Mat& likeEqualize
 
 int main(int argc, char* argv[])
 {
-//	std::string fullBinFileName = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\ir_file_20170713_300m_jingzhi.bin";
-//	std::string fullBinFileName = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\ir_file_20170713_300m_yundong.bin";
-//	std::string fullBinFileName = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\ir_file_20170713_500m_jingzhi.bin";
-//	std::string fullBinFileName = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\ir_file_20170713_500m_yundong.bin";
-//	std::string fullBinFileName = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\ir_file_20170713_700m_jingzhi.bin";
-//	std::string fullBinFileName = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\ir_file_20170713_700m_yundong.bin";
-	std::string fullBinFileName = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\ir_file_20170713_1000m_jingzhi.bin";
-//	std::string fullBinFileName = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\ir_file_20170713_1000m_yundong.bin";
-
-//	std::string fullImageFileNameFormat = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\Frames\\ir_file_20170713_300m_jingzhi\\Frame_08%d.png";
-//	std::string fullImageFileNameFormat = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\Frames\\ir_file_20170713_300m_yundong\\Frame_08%d.png";
-//	std::string fullImageFileNameFormat = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\Frames\\ir_file_20170713_500m_jingzhi\\Frame_08%d.png";
-//	std::string fullImageFileNameFormat = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\Frames\\ir_file_20170713_500m_yundong\\Frame_08%d.png";
-//	std::string fullImageFileNameFormat = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\Frames\\ir_file_20170713_700m_jingzhi\\Frame_08%d.png";
-//	std::string fullImageFileNameFormat = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\Frames\\ir_file_20170713_700m_yundong\\Frame_08%d.png";
-	std::string fullImageFileNameFormat = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\Frames\\ir_file_20170713_1000m_jingzhi\\Frame_08%d.png";
-//	std::string fullImageFileNameFormat = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\Frames\\ir_file_20170713_1000m_yundong\\Frame_08%d.png";
-
+	std::string fullBinFileName = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\ir_file_20170713_300m_jingzhi.bin";  std::string fullImageFileNameFormat = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\Frames\\ir_file_20170713_300m_jingzhi\\Frame_%08d.png";
+//	std::string fullBinFileName = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\ir_file_20170713_300m_yundong.bin";	 std::string fullImageFileNameFormat = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\Frames\\ir_file_20170713_300m_yundong\\Frame_%08d.png";
+//	std::string fullBinFileName = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\ir_file_20170713_500m_jingzhi.bin";	 std::string fullImageFileNameFormat = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\Frames\\ir_file_20170713_500m_jingzhi\\Frame_%08d.png";
+//	std::string fullBinFileName = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\ir_file_20170713_500m_yundong.bin";	 std::string fullImageFileNameFormat = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\Frames\\ir_file_20170713_500m_yundong\\Frame_%08d.png";
+//	std::string fullBinFileName = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\ir_file_20170713_700m_jingzhi.bin";	 std::string fullImageFileNameFormat = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\Frames\\ir_file_20170713_700m_jingzhi\\Frame_%08d.png";
+//	std::string fullBinFileName = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\ir_file_20170713_700m_yundong.bin";	 std::string fullImageFileNameFormat = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\Frames\\ir_file_20170713_700m_yundong\\Frame_%08d.png";
+//	std::string fullBinFileName = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\ir_file_20170713_1000m_jingzhi.bin"; std::string fullImageFileNameFormat = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\Frames\\ir_file_20170713_1000m_jingzhi\\Frame_%08d.png";
+//	std::string fullBinFileName = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\ir_file_20170713_1000m_yundong.bin"; std::string fullImageFileNameFormat = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\Frames\\ir_file_20170713_1000m_yundong\\Frame_%08d.png";
+	
 	char fullImageFileName[FileNameBufferSize];
 
 	auto frameIndex = 0;
@@ -205,7 +212,10 @@ int main(int argc, char* argv[])
 			else
 				lowByteFrame.at<uchar>(rowIndex, colIndex) = lowPart;
 
-			ChangeRows(rowIndex, colIndex);
+//			ChangeRows(rowIndex, colIndex);
+
+			ChangeCols(rowIndex, colIndex);
+
 			byteIndex += 2;
 		}
 
@@ -218,8 +228,8 @@ int main(int argc, char* argv[])
 
 		GenerateFrameByLowDifference(basicFrame, lowDifferenceFrame, minVal);
 
-		//		sprintf_s(fullImageFileName, FileNameBufferSize, fullImageFileNameFormat.c_str(), frameIndex);
-		//		imwrite(fullImageFileName, basicFrame);
+		sprintf_s(fullImageFileName, FileNameBufferSize, fullImageFileNameFormat.c_str(), frameIndex);
+		imwrite(fullImageFileName, likeEqualizeFrame);
 
 		std::cout << "Current Index = " << std::setw(4) << frameIndex << std::endl;
 
@@ -231,7 +241,7 @@ int main(int argc, char* argv[])
 
 		imshow("Like Equalized Frame", likeEqualizeFrame);
 
-		cvWaitKey(300);
+		cvWaitKey(1);
 		frameIndex++;
 	}
 
