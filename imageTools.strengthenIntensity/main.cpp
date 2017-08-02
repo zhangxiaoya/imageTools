@@ -204,8 +204,12 @@ void MaxFilter(const cv::Mat& curFrame, cv::Mat& filtedFrame, int kernelSize)
 inline void Discretization(const cv::Mat& filtedFrame, cv::Mat& discretizatedFrame)
 {
 	for (auto r = 0; r < filtedFrame.rows; ++r)
+	{
 		for (auto c = 0; c < filtedFrame.cols; ++c)
+		{
 			discretizatedFrame.at<uint8_t>(r, c) = (filtedFrame.at<uint8_t>(r, c) / DISCRATED_BIN) * DISCRATED_BIN;
+		}
+	}
 }
 
 int main(int argc, char* argv[])
