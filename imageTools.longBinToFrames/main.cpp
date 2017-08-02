@@ -95,7 +95,9 @@ void GenerateFrameByLowDifference(cv::Mat& originalImg, cv::Mat& lowDifferenceIm
 		for (auto c = 0; c < originalImg.cols; ++c)
 		{
 			if (ptr[c] < 255)
+			{
 				continue;
+			}
 			auto val = ptr[c] - minVal;
 			smallPtr[c] = val < 256 ? val : 255;
 			smallPtr[c] = static_cast<uchar>(ceil(smallPtr[c] / 25.0) * 25);
