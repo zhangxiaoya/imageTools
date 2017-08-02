@@ -64,11 +64,17 @@ int FindMaxDiff(cv::Mat& img, uint16_t& min_val, uint16_t& max_val)
 		for (auto c = 0; c < img.cols; ++c)
 		{
 			if(ptr[c] < 255)
+			{
 				continue;
+			}
 			if (maxVal < ptr[c])
+			{
 				maxVal = ptr[c];
+			}
 			if (minVal > ptr[c])
+			{
 				minVal = ptr[c];
+			}
 		}
 	}
 
@@ -131,7 +137,9 @@ void GenerateLikeEqualizedFrame(const cv::Mat& basicFrame, cv::Mat& likeEqualize
 		props[i] = double(pixelFrequency[i]) / double(ImageWidth * ImageHeight);
 
 		if (i != 0)
+		{
 			props[i] += props[i - 1];
+		}
 	}
 
 	uchar newPixels[256];
@@ -168,7 +176,7 @@ int main(int argc, char* argv[])
 //	std::string fullBinFileName = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\ir_file_20170713_700m_yundong.bin";	 std::string fullImageFileNameFormat = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\Frames\\ir_file_20170713_700m_yundong\\Frame_%08d.png";
 //	std::string fullBinFileName = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\ir_file_20170713_1000m_jingzhi.bin"; std::string fullImageFileNameFormat = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\Frames\\ir_file_20170713_1000m_jingzhi\\Frame_%08d.png";
 //	std::string fullBinFileName = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\ir_file_20170713_1000m_yundong.bin"; std::string fullImageFileNameFormat = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\Frames\\ir_file_20170713_1000m_yundong\\Frame_%08d.png";
-	
+
 	char fullImageFileName[FileNameBufferSize];
 
 	auto frameIndex = 0;
@@ -208,9 +216,13 @@ int main(int argc, char* argv[])
 			basicFrame.at<int16_t>(rowIndex, colIndex) = perPixel;
 
 			if (highPart < 0x13) // for invalid pixels
+			{
 				lowByteFrame.at<uchar>(rowIndex, colIndex) = 0;
+			}
 			else
+			{
 				lowByteFrame.at<uchar>(rowIndex, colIndex) = lowPart;
+			}
 
 //			ChangeRows(rowIndex, colIndex);
 
