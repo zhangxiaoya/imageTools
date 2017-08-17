@@ -170,10 +170,10 @@ void GenerateLikeEqualizedFrame(const cv::Mat& basicFrame, cv::Mat& likeEqualize
 
 int main(int argc, char* argv[])
 {
-	std::string fullBinFileName = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\ir_file_20170713_300m_jingzhi.bin";  std::string fullImageFileNameFormat = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\Frames\\ir_file_20170713_300m_jingzhi\\Frame_%08d.png";
+//	std::string fullBinFileName = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\ir_file_20170713_300m_jingzhi.bin";  std::string fullImageFileNameFormat = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\Frames\\ir_file_20170713_300m_jingzhi\\Frame_%08d.png";
 //	std::string fullBinFileName = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\ir_file_20170713_300m_yundong.bin";	 std::string fullImageFileNameFormat = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\Frames\\ir_file_20170713_300m_yundong\\Frame_%08d.png";
-//	std::string fullBinFileName = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\ir_file_20170713_500m_jingzhi.bin";	 std::string fullImageFileNameFormat = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\Frames\\ir_file_20170713_500m_jingzhi\\Frame_%08d.png";
-//	std::string fullBinFileName = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\ir_file_20170713_500m_yundong.bin";	 std::string fullImageFileNameFormat = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\Frames\\ir_file_20170713_500m_yundong\\Frame_%08d.png";
+//	std::string fullBinFileName = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\ir_file_20170713_500m_jingzhi.bin";	 std::string fullImageFileNameFormat = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\Frames\\ir_file_20170713_500m_jingzhi\\Frame_1%08d.png";
+	std::string fullBinFileName = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\ir_file_20170713_500m_yundong.bin";	 std::string fullImageFileNameFormat = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\Frames\\ir_file_20170713_500m_yundong\\Frame_1%08d.png";
 //	std::string fullBinFileName = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\ir_file_20170713_700m_jingzhi.bin";	 std::string fullImageFileNameFormat = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\Frames\\ir_file_20170713_700m_jingzhi\\Frame_%08d.png";
 //	std::string fullBinFileName = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\ir_file_20170713_700m_yundong.bin";	 std::string fullImageFileNameFormat = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\Frames\\ir_file_20170713_700m_yundong\\Frame_%08d.png";
 //	std::string fullBinFileName = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\ir_file_20170713_1000m_jingzhi.bin"; std::string fullImageFileNameFormat = "E:\\WorkLogs\\Projects\\Project4\\Data\\Forth\\test\\Frames\\ir_file_20170713_1000m_jingzhi\\Frame_%08d.png";
@@ -226,7 +226,7 @@ int main(int argc, char* argv[])
 				lowByteFrame.at<uchar>(rowIndex, colIndex) = lowPart;
 			}
 
-//			ChangeRows(rowIndex, colIndex);
+			// ChangeRows(rowIndex, colIndex);
 
 			ChangeCols(rowIndex, colIndex);
 
@@ -243,13 +243,14 @@ int main(int argc, char* argv[])
 		GenerateFrameByLowDifference(basicFrame, lowDifferenceFrame, minVal);
 
 		sprintf_s(fullImageFileName, FileNameBufferSize, fullImageFileNameFormat.c_str(), frameIndex);
-		imwrite(fullImageFileName, likeEqualizeFrame);
+//		imwrite(fullImageFileName, likeEqualizeFrame);
+		imwrite(fullImageFileName, lowByteFrame);
 
 		std::cout << "Current Index = " << std::setw(4) << frameIndex << std::endl;
 
 		imshow("Basic Frame", basicFrame);
 
-		imshow("Low Difference Threshold Frame", lowDifferenceFrame);
+//		imshow("Low Difference Threshold Frame", lowDifferenceFrame);
 
 		imshow("Low Part Original Pixel Frame", lowByteFrame);
 
@@ -258,7 +259,7 @@ int main(int argc, char* argv[])
 		cvWaitKey(1);
 		frameIndex++;
 	}
-
+	cv::destroyAllWindows();
 	system("Pause");
 	return 0;
 }
